@@ -1,0 +1,12 @@
+{
+    "editor.formatOnSave": true,
+    "editor.tabCompletion": "onlySnippets",
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "always"
+    },
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        "svelte"
+    ]
+}

@@ -1,0 +1,20 @@
+// See https://containers.dev/implementors/json_reference/ for configuration reference
+{
+    "name": "Untitled Node.js project",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "remoteUser": "node",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "svelte.svelte-vscode",
+                "antfu.vite",
+                "esbenp.prettier-vscode",
+                "dbaeumer.vscode-eslint",
+                "fivethree.vscode-svelte-snippets"
+            ],
+            "recommendations": ["RapidAPI.vscode-rapidapi-client"]
+        }
+    }
+}
