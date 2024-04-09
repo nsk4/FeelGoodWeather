@@ -1,18 +1,20 @@
 <script lang="ts">
     import DataDisplay from './DataDisplay.svelte';
     import LocationSelector from './LocationSelector.svelte';
-    import type { GpsLocation } from '$lib/utils/DataTypes';
+    import type { LocationCoordinates } from '$lib/utils/DataTypes';
     import { fetchWeatherData, type LocationWeatherData } from '$lib/utils/WeatherUtils';
     import WeatherComparator from './WeatherComparator.svelte';
 
     let source: LocationWeatherData;
     let target: LocationWeatherData;
 
-    const handleSetMyLocation = async (event: CustomEvent<GpsLocation>): Promise<void> => {
+    const handleSetMyLocation = async (event: CustomEvent<LocationCoordinates>): Promise<void> => {
         source = await fetchWeatherData(event.detail);
     };
 
-    const handleSetTargetLocation = async (event: CustomEvent<GpsLocation>): Promise<void> => {
+    const handleSetTargetLocation = async (
+        event: CustomEvent<LocationCoordinates>
+    ): Promise<void> => {
         target = await fetchWeatherData(event.detail);
     };
 </script>

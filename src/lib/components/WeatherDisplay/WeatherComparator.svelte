@@ -3,7 +3,6 @@
 
     export let source: LocationWeatherData;
     export let target: LocationWeatherData;
-
     const threshold = 0.6;
     let comparisonScore: number;
     let comparisonMessage: string;

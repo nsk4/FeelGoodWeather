@@ -1,8 +1,8 @@
 import { error } from '@sveltejs/kit';
-import type { GpsLocation } from './DataTypes';
+import type { LocationCoordinates } from './DataTypes';
 
 export interface LocationWeatherData {
-    location: GpsLocation;
+    location: LocationCoordinates;
     weatherData: WeatherData[];
 }
 
@@ -45,7 +45,9 @@ export const WeatherCodes: Readonly<{ [key: string]: string }> = {
     '99': 'Thunderstorm with heavy hail'
 };
 
-export const fetchWeatherData = async (location: GpsLocation): Promise<LocationWeatherData> => {
+export const fetchWeatherData = async (
+    location: LocationCoordinates
+): Promise<LocationWeatherData> => {
     // TODO: make number of days configurable
     const baseUrl = 'https://api.open-meteo.com/v1/forecast';
     const url = `${baseUrl}?latitude=${location.latitude}&longitude=${location.longitude}&daily=weather_code,precipitation_sum,precipitation_probability_max`;
@@ -75,7 +77,7 @@ export const fetchWeatherData = async (location: GpsLocation): Promise<LocationW
         location: {
             latitude: responseJson.latitude as number,
             longitude: responseJson.longitude as number
-        } as GpsLocation,
+        } as LocationCoordinates,
         weatherData: weatherData as WeatherData[]
     };
 };
