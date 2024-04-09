@@ -18,7 +18,7 @@
 </script>
 
 <div>
-    <LocationSelector on:setlocation={handleSetMyLocation} />
+    <LocationSelector on:setlocation={handleSetMyLocation} localLocation />
     <LocationSelector on:setlocation={handleSetTargetLocation} />
 
     <DataDisplay data={source} />

@@ -94,26 +94,21 @@ export const calculateWeatherScore = (
     data2: LocationWeatherData
 ): number => {
     // TODO: check that the days and the amount of days is the same for both
-
-    // percipation = percipation * probability
     let totalPercipation1 = 0;
     let totalPercipation2 = 0;
-
-    // Number of days better than target.
-    let dayComparison = 0;
+    let dayComparison = 0; // Number of days better than target.
 
     for (let index = 0; index < data1.weatherData.length; index++) {
-        const daySource = data1.weatherData[index];
-        const percipation1 = daySource.percipation * daySource.percipationProbablility;
-        totalPercipation1 += percipation1;
+        const day1 = data1.weatherData[index];
+        totalPercipation1 += day1.percipation;
 
-        const dayTarget = data2.weatherData[index];
-        const percipation2 = dayTarget.percipation * dayTarget.percipationProbablility;
-        totalPercipation2 += percipation2;
+        const day2 = data2.weatherData[index];
+        totalPercipation2 += day2.percipation;
 
-        if (Math.abs(totalPercipation1 - totalPercipation2) < 0.1) {
+        // If percipation probability difference is less than 10% then assume the probability is the same.
+        if (Math.abs(day1.percipationProbablility - day2.percipationProbablility) < 10) {
             dayComparison += 0.5;
-        } else if (percipation1 < percipation2) {
+        } else if (day1.percipationProbablility < day2.percipationProbablility) {
             dayComparison += 1;
         }
     }
@@ -129,6 +124,6 @@ export const calculateWeatherScore = (
         finalPercipationScore = 1 - totalPercipation1 / (totalPercipation1 + totalPercipation2);
     }
 
-    // Final score = day comparison (75%) and total percipation (25%)
-    return finalDayScore * 0.75 + finalPercipationScore * 0.25;
+    // Final score = day comparison (80%) and total percipation (20%)
+    return finalDayScore * 0.8 + finalPercipationScore * 0.2;
 };
