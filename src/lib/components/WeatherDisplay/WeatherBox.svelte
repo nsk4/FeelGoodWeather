@@ -4,7 +4,6 @@
     import type { LocationCoordinates } from '$lib/utils/DataTypes';
     import { fetchWeatherData, type LocationWeatherData } from '$lib/utils/WeatherUtils';
     import WeatherComparator from './WeatherComparator.svelte';
-
     let source: LocationWeatherData;
     let target: LocationWeatherData;
 

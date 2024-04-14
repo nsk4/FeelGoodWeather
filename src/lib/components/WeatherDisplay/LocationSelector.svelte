@@ -1,17 +1,19 @@
 <script lang="ts">
+    import TiLocationArrowOutline from 'svelte-icons/ti/TiLocationArrowOutline.svelte';
     import { createEventDispatcher } from 'svelte';
-    import type { GpsLocation } from '$lib/utils/DataTypes';
-
+    import type { LocationCoordinates } from '$lib/utils/DataTypes';
+    import { slide } from 'svelte/transition';
     export let localLocation: boolean = false;
 
     const dispatch = createEventDispatcher();
     let latitude: number;
     let longitude: number;
     const submitForm = (): void => {
-        dispatch('setlocation', { latitude, longitude } as GpsLocation);
+        errorMessage = '';
+        dispatch('setlocation', { latitude, longitude } as LocationCoordinates);
     };
 
-    let errorMessage: string;
+    let errorMessage: string = '';
     const getLocation = (): void => {
         errorMessage = '';
         if (navigator.geolocation) {
@@ -56,10 +58,18 @@
     />
 
     {#if localLocation}
-        <button on:click={getLocation}>Get current location</button>
+        <button type="button" on:click={getLocation}>
+            <span style:height="10px" style:display="inline-block">
+                <TiLocationArrowOutline />
+            </span>
+        </button>
     {/if}
     <button type="submit">Submit</button>
-    {#if localLocation && errorMessage}
-        <p style="color:red">Error: {errorMessage}</p>
-    {/if}
 </form>
+
+{#if !!errorMessage}
+    <p style:color="red" transition:slide>Error: {errorMessage}</p>
+{/if}
+
+<style lang="scss">
+</style>
