@@ -19,11 +19,10 @@
 </script>
 
 <div>
-    <LocationSelector on:setlocation={handleSetMyLocation} localLocation />
-    <LocationSelector on:setlocation={handleSetTargetLocation} />
+    I live in: <LocationSelector on:setlocation={handleSetMyLocation} localLocation />
+    I flex over: <LocationSelector on:setlocation={handleSetTargetLocation} />
 
-    <DataDisplay data={source} />
-    <DataDisplay data={target} />
+    <DataDisplay data={[source, target]} />
 
     <WeatherComparator {source} {target} />
 </div>

@@ -5,21 +5,25 @@
     export let target: LocationWeatherData;
     const threshold = 0.6;
     let comparisonScore: number;
+    let comparisonTitle: string;
     let comparisonMessage: string;
     $: {
         if (source && target) {
             comparisonScore = calculateWeatherScore(source, target);
             if (comparisonScore > threshold) {
+                comparisonTitle = 'Feel good!';
                 comparisonMessage =
                     betterWeatherDescriptions[
                         Math.floor(Math.random() * betterWeatherDescriptions.length)
                     ];
             } else if (comparisonScore < 1 - threshold) {
+                comparisonTitle = 'Feel bad!';
                 comparisonMessage =
                     worseWeatherDescriptions[
                         Math.floor(Math.random() * worseWeatherDescriptions.length)
                     ];
             } else {
+                comparisonTitle = 'Feel the same!';
                 comparisonMessage =
                     neutralWeatherDescriptions[
                         Math.floor(Math.random() * neutralWeatherDescriptions.length)
@@ -69,6 +73,7 @@
 </script>
 
 <h2>Compare weather data</h2>
-{#if comparisonMessage}
+{#if comparisonTitle && comparisonMessage}
+    <h3>{comparisonTitle}</h3>
     <p>{comparisonMessage}</p>
 {/if}
