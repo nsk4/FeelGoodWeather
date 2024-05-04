@@ -72,8 +72,7 @@
     ];
 </script>
 
-<h2>Compare weather data</h2>
 {#if comparisonTitle && comparisonMessage}
-    <h3>{comparisonTitle}</h3>
+    <h2>{comparisonTitle}</h2>
     <p>{comparisonMessage}</p>
 {/if}

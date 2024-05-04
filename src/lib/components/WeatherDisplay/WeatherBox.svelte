@@ -4,32 +4,74 @@
     import type { LocationCoordinates } from '$lib/utils/DataTypes';
     import { fetchWeatherData, type LocationWeatherData } from '$lib/utils/WeatherUtils';
     import WeatherComparator from './WeatherComparator.svelte';
+    import { fade, slide } from 'svelte/transition';
+    let sourceCoordinates: LocationCoordinates;
     let source: LocationWeatherData;
+    let targetCoordinates: LocationCoordinates;
     let target: LocationWeatherData;
+    let inputIndex = 0;
 
     const handleSetMyLocation = async (event: CustomEvent<LocationCoordinates>): Promise<void> => {
-        source = await fetchWeatherData(event.detail);
+        inputIndex += 1;
+        sourceCoordinates = event.detail;
     };
 
     const handleSetTargetLocation = async (
         event: CustomEvent<LocationCoordinates>
     ): Promise<void> => {
-        target = await fetchWeatherData(event.detail);
+        inputIndex += 1;
+        targetCoordinates = event.detail;
+    };
+
+    const handleGetWeatherData = async (): Promise<void> => {
+        source = await fetchWeatherData(sourceCoordinates);
+        target = await fetchWeatherData(targetCoordinates);
+        inputIndex += 1;
     };
 </script>
 
-<div>
-    I live in: <LocationSelector on:setlocation={handleSetMyLocation} localLocation />
-    I flex over: <LocationSelector on:setlocation={handleSetTargetLocation} />
+<ul>
+    <li class:full-opacity={inputIndex === 0} transition:fade>
+        I live in: <LocationSelector on:setlocation={handleSetMyLocation} localLocation />
+    </li>
+    <li class:full-opacity={inputIndex === 1} transition:fade>
+        I flex over: <LocationSelector on:setlocation={handleSetTargetLocation} />
+    </li>
+    <li class:full-opacity={inputIndex === 2} transition:fade>
+        <input type="button" value="Flex" on:click={handleGetWeatherData} />
+    </li>
 
-    <DataDisplay data={[source, target]} />
-
-    <WeatherComparator {source} {target} />
-</div>
+    {#if inputIndex !== 3}
+        <li>???</li>
+    {:else}
+        <li class:full-opacity={inputIndex === 3} transition:fade>
+            <WeatherComparator {source} {target} />
+        </li>
+        <li class:full-opacity={inputIndex === 3} transition:slide={{ delay: 500 }}>
+            <DataDisplay data={[source, target]} />
+        </li>
+    {/if}
+</ul>
 
 <style lang="scss">
-    div {
-        background-color: #c5c6d0;
-        padding: 20px;
+    ul {
+        list-style-type: none;
+        padding: 0;
+        /*display: flex;*/
+        flex-wrap: wrap;
+        gap: 10px;
+
+        li {
+            flex: 1 0 100px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+            opacity: 1;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        li:not(.full-opacity) {
+            opacity: 0.5;
+        }
     }
 </style>

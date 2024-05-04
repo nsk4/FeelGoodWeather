@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import type { LocationCoordinates } from './DataTypes';
+import type { LocationCoordinates } from './LocationUtils';
 import WiCloudy from 'svelte-icons/wi/WiCloudy.svelte';
 import WiDayCloudy from 'svelte-icons/wi/WiDayCloudy.svelte';
 import WiFog from 'svelte-icons/wi/WiFog.svelte';
@@ -22,8 +22,12 @@ export interface LocationWeatherData {
     weatherData: WeatherData[];
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type weatherCodeDescription = { description: string; score: number; icon: any };
+export interface weatherCodeDescription {
+    description: string;
+    score: number;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    icon: any;
+}
 
 export interface WeatherData {
     date: string;
@@ -72,12 +76,10 @@ export const fetchWeatherData = async (
     const url = `${baseUrl}?latitude=${location.latitude}&longitude=${location.longitude}&daily=weather_code,precipitation_sum,precipitation_probability_max`;
     const response = await fetch(url);
     if (!response.ok) {
-        console.log(response, response.status, response.statusText);
         throw error(response.status, response.statusText);
     }
 
     const responseJson = await response.json();
-    console.log(responseJson);
     let weatherData: WeatherData[] = [];
     for (let index = 0; index < responseJson.daily.time.length; index++) {
         weatherData = [
