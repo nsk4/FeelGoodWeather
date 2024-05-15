@@ -16,7 +16,8 @@
                 {#if dataItem}
                     <div class="row">
                         <div class="cell">
-                            {`${dataItem.location.latitude}:${dataItem.location.longitude}`}
+                            <p>{dataItem.location.name}</p>
+                            <p>{`${dataItem.location.latitude}:${dataItem.location.longitude}`}</p>
                         </div>
                         {#each dataItem.weatherData as weatherData}
                             <div class="cell">

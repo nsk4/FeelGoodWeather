@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import type { LocationCoordinates } from './LocationUtils';
+import type LocationCoordinates from './LocationCoordinates';
 import WiCloudy from 'svelte-icons/wi/WiCloudy.svelte';
 import WiDayCloudy from 'svelte-icons/wi/WiDayCloudy.svelte';
 import WiFog from 'svelte-icons/wi/WiFog.svelte';
@@ -96,6 +96,7 @@ export const fetchWeatherData = async (
 
     return {
         location: {
+            name: location.name,
             latitude: responseJson.latitude as number,
             longitude: responseJson.longitude as number
         } as LocationCoordinates,
@@ -115,13 +116,13 @@ export const calculateWeatherScore = (
     data1: LocationWeatherData,
     data2: LocationWeatherData
 ): number => {
-    // TODO: check that the days and the amount of days is the same for both
     let totalPercipation1 = 0;
     let totalPercipation2 = 0;
     let dayPercipationComparison = 0; // Days better than target
     let dayCodeComparison = 0; // Days better than target
+    const numberOfDays = Math.min(data1.weatherData.length, data2.weatherData.length);
 
-    for (let index = 0; index < data1.weatherData.length; index++) {
+    for (let index = 0; index < numberOfDays; index++) {
         const day1 = data1.weatherData[index];
         const day2 = data2.weatherData[index];
 
@@ -154,10 +155,10 @@ export const calculateWeatherScore = (
     }
 
     // Score for daily percipation comparison - score/#days
-    const finalDayPercipationScore = dayPercipationComparison / data1.weatherData.length;
+    const finalDayPercipationScore = dayPercipationComparison / numberOfDays;
 
     // Score for daily weather code comparison - score/#days
-    const finalDayCodeScore = dayCodeComparison / data1.weatherData.length;
+    const finalDayCodeScore = dayCodeComparison / numberOfDays;
 
     // Final score = total percipation (25%), daily percipation comparison (25%) and daily code comparison (50%)
     return finalPercipationScore * 0.25 + finalDayPercipationScore * 0.25 + finalDayCodeScore * 0.5;

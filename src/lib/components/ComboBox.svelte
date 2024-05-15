@@ -6,8 +6,8 @@
     export let minLimit: number = 3;
     export let displayLimit: number = 10;
     export let suggestions: string[] = [];
+    export let value: string = '';
 
-    let userInput: string = '';
     let filteredSuggestions: string[] = [];
     let isFocused: boolean = false;
     let showSuggestions: boolean = false;
@@ -16,21 +16,21 @@
     $: fuse = new Fuse(suggestions, { threshold: 0.35 });
 
     // Filter suggestions based on user input only if user entered enough characters
-    $: if (userInput.length >= minLimit) {
+    $: if (value.length >= minLimit) {
         filteredSuggestions = fuse
-            .search(userInput)
+            .search(value)
             .slice(0, displayLimit)
             .map((result) => result.item);
     }
 
     // Show/hide suggestions based on user input
-    $: showSuggestions = userInput.length >= minLimit && filteredSuggestions.length > 0;
+    $: showSuggestions = value.length >= minLimit && filteredSuggestions.length > 0;
 
     // Update input field with selected suggestion
     function selectSuggestion(suggestion: string): void {
-        userInput = suggestion;
+        value = suggestion;
         isFocused = false;
-        dispatch('selected', { text: userInput });
+        dispatch('selected', { text: value });
     }
 
     // Close suggestions when clicking outside the combobox
@@ -51,9 +51,10 @@
 </script>
 
 <div class="combobox" bind:this={input}>
+    <!-- TODO: isFocused is not set if user clicks on the input box too fast when page is still loading. -->
     <input
         type="text"
-        bind:value={userInput}
+        bind:value
         placeholder="Type to filter..."
         on:focus={() => (isFocused = true)}
     />

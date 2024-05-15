@@ -1,7 +1,7 @@
 <script lang="ts">
     import DataDisplay from './DataDisplay.svelte';
     import LocationSelector from './LocationSelector.svelte';
-    import type { LocationCoordinates } from '$lib/utils/DataTypes';
+    import type LocationCoordinates from '$lib/utils/LocationCoordinates';
     import { fetchWeatherData, type LocationWeatherData } from '$lib/utils/WeatherUtils';
     import WeatherComparator from './WeatherComparator.svelte';
     import { fade, slide } from 'svelte/transition';
