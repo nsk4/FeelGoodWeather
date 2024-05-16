@@ -5,6 +5,7 @@
     import { fetchWeatherData, type LocationWeatherData } from '$lib/utils/WeatherUtils';
     import WeatherComparator from './WeatherComparator.svelte';
     import { fade, slide } from 'svelte/transition';
+    import { derived } from 'svelte/store';
     let sourceCoordinates: LocationCoordinates;
     let source: LocationWeatherData;
     let targetCoordinates: LocationCoordinates;
@@ -32,10 +33,15 @@
 
 <ul>
     <li class:full-opacity={inputIndex === 0} transition:fade>
-        I live in: <LocationSelector on:setlocation={handleSetMyLocation} localLocation />
+        I live in:
+        <div>
+            <LocationSelector on:setlocation={handleSetMyLocation} localLocation />
+        </div>
     </li>
     <li class:full-opacity={inputIndex === 1} transition:fade>
-        I flex over: <LocationSelector on:setlocation={handleSetTargetLocation} />
+        <div>
+            I flex over: <LocationSelector on:setlocation={handleSetTargetLocation} />
+        </div>
     </li>
     <li class:full-opacity={inputIndex === 2} transition:fade>
         <input type="button" value="Flex" on:click={handleGetWeatherData} />
@@ -55,19 +61,20 @@
 
 <style lang="scss">
     ul {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         list-style-type: none;
         padding: 0;
-        /*display: flex;*/
-        flex-wrap: wrap;
-        gap: 10px;
+        gap: 20px;
 
         li {
-            flex: 1 0 100px;
             padding: 10px;
             border: 1px solid #ccc;
             text-align: center;
             opacity: 1;
             transition: opacity 0.3s ease-in-out;
+            width: 400px;
         }
 
         li:not(.full-opacity) {

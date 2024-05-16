@@ -4,11 +4,11 @@
     import type LocationCoordinates from '$lib/utils/LocationCoordinates';
     import { slide } from 'svelte/transition';
     import ComboBox from '$components/ComboBox.svelte';
+    import ToggleExpand from '$components/ToggleExpand.svelte';
 
     export let localLocation: boolean = false;
 
     const dispatch = createEventDispatcher();
-    let num: number;
     let location: LocationCoordinates = {
         name: '',
         latitude: undefined as unknown as number,
@@ -61,9 +61,14 @@
         return distance;
     };
 
-    // Get city coordinates from city name
+    // Get city coordinates from city name.
     const getCityLocation = (name: string): LocationCoordinates | undefined => {
-        return cities?.find((city) => city.name === name);
+        const foundCity = cities?.find((city) => city.name === name);
+        if (!foundCity) {
+            return undefined;
+        }
+        // Return copy of the found city object.
+        return { ...foundCity };
     };
 
     // Get closest city to the given coordinates. If no city is closer than threshold then return back the same point.
@@ -72,31 +77,26 @@
         longitude: number,
         threshold: number
     ): LocationCoordinates => {
-        const cityDistances = cities?.map((city) => {
-            return {
-                city: city,
-                distance: calculateHaversineDistance(
-                    latitude,
-                    longitude,
-                    city.latitude,
-                    city.longitude
-                )
-            };
-        });
-
+        // Iterate over distances and pick the closest city if it is within threshold distance.
         let minDistance = threshold;
         let closestCity: LocationCoordinates | undefined = undefined;
-        cityDistances.forEach((cityDistance) => {
-            if (cityDistance.distance < minDistance) {
-                closestCity = cityDistance.city;
-                minDistance = cityDistance.distance;
+        cities?.forEach((city) => {
+            const distance = calculateHaversineDistance(
+                latitude,
+                longitude,
+                city.latitude,
+                city.longitude
+            );
+            if (distance < minDistance) {
+                closestCity = city;
+                minDistance = distance;
             }
         });
 
-        if (!closestCity) {
-            return { name: 'N/A', latitude, longitude };
-        }
-        return closestCity;
+        // If close city is found then return a copy of it. If not then return a N/A location with user coordinates.
+        return closestCity
+            ? structuredClone(closestCity)
+            : { name: `N/A (${latitude}:${longitude})`, latitude, longitude };
     };
 
     // Initialize cities
@@ -124,7 +124,7 @@
                     location = getClosestCityLocation(
                         position.coords.latitude,
                         position.coords.longitude,
-                        50
+                        100
                     );
                     dispatch('setlocation', location);
                 },
@@ -138,9 +138,9 @@
     };
 
     // Submit selected coordinates
-    const submitForm = (): void => {
+    const submitCoordinatesForm = (): void => {
         errorMessage = '';
-        location = getClosestCityLocation(location.latitude, location.longitude, 50);
+        location = getClosestCityLocation(location.latitude, location.longitude, 100);
         dispatch('setlocation', location);
     };
 </script>
@@ -155,32 +155,34 @@
     </button>
 {/if}
 
-<form on:submit|preventDefault={submitForm}>
-    <input
-        type="number"
-        step="0.001"
-        id="latitude"
-        bind:value={location.latitude}
-        placeholder="Latitude"
-        min={-90}
-        max={90}
-        style:width="75px"
-        required
-    />
-    :
-    <input
-        type="number"
-        step="0.001"
-        id="longitude"
-        bind:value={location.longitude}
-        placeholder="Longitude"
-        min={-180}
-        max={180}
-        style:width="75px"
-        required
-    />
-    <button type="submit">Submit</button>
-</form>
+<ToggleExpand>
+    <form on:submit|preventDefault={submitCoordinatesForm} transition:slide>
+        <input
+            type="number"
+            step="0.0001"
+            id="latitude"
+            bind:value={location.latitude}
+            placeholder="Latitude"
+            min={-90}
+            max={90}
+            style:width="75px"
+            required
+        />
+        :
+        <input
+            type="number"
+            step="0.0001"
+            id="longitude"
+            bind:value={location.longitude}
+            placeholder="Longitude"
+            min={-180}
+            max={180}
+            style:width="75px"
+            required
+        />
+        <button type="submit">Set</button>
+    </form>
+</ToggleExpand>
 
 {#if !!errorMessage}
     <p style:color="red" transition:slide>Error: {errorMessage}</p>
