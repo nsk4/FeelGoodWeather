@@ -51,12 +51,12 @@
 </script>
 
 <div class="combobox" bind:this={input}>
-    <!-- TODO: isFocused is not set if user clicks on the input box too fast when page is still loading. -->
     <input
         type="text"
         bind:value
         placeholder="Type to filter..."
         on:focus={() => (isFocused = true)}
+        on:change={() => (isFocused = true)}
     />
     {#if isFocused && showSuggestions}
         <ul>
