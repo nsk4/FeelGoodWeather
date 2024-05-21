@@ -5,7 +5,6 @@
     import { fetchWeatherData, type LocationWeatherData } from '$lib/utils/WeatherUtils';
     import WeatherComparator from './WeatherComparator.svelte';
     import { fade, slide } from 'svelte/transition';
-    import { derived } from 'svelte/store';
     let sourceCoordinates: LocationCoordinates;
     let source: LocationWeatherData;
     let targetCoordinates: LocationCoordinates;
