@@ -58,6 +58,16 @@
         on:focus={() => (isFocused = true)}
         on:change={() => (isFocused = true)}
     />
+
+    <input
+        type="button"
+        class="clear-input-button"
+        value="X"
+        on:click={() => {
+            value = '';
+        }}
+    />
+
     {#if isFocused && showSuggestions}
         <ul>
             {#each filteredSuggestions as suggestion (suggestion)}
@@ -71,6 +81,17 @@
     .combobox {
         position: relative;
         display: inline-block;
+
+        .clear-input-button {
+            position: absolute;
+            background: none;
+            border: none;
+            cursor: pointer;
+            right: 0px;
+            top: 0;
+            bottom: 0;
+            color: gray;
+        }
 
         ul {
             position: absolute;
