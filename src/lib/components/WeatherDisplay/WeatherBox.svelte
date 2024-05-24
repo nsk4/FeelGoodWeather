@@ -86,12 +86,22 @@
     <li>
         <div class={inputIndex === 3 ? 'full-opacity' : 'not-full-opacity'}>
             {#if inputIndex === 3}
-                <div transition:slide={{ delay: 500 }}><DataDisplay data={[source, target]} /></div>
+                <div in:slide={{ delay: 500 }} out:slide>
+                    <DataDisplay data={[source, target]} />
+                </div>
             {:else}
                 <div transition:slide>???</div>
             {/if}
         </div>
     </li>
+
+    {#if inputIndex === 3}
+        <li in:slide={{ delay: 750 }} out:slide>
+            <div class="full-opacity">
+                <input type="button" value="Start over" on:click={() => (inputIndex = 0)} />
+            </div>
+        </li>
+    {/if}
 </ul>
 
 <style lang="scss">
