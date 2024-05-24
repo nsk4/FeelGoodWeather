@@ -59,18 +59,11 @@
         on:change={() => (isFocused = true)}
     />
 
-    <input
-        type="button"
-        class="clear-input-button"
-        value="X"
-        on:click={() => {
-            value = '';
-        }}
-    />
+    <input type="button" class="clear-input-button" value="X" on:click={() => (value = '')} />
 
     {#if isFocused && showSuggestions}
         <ul>
-            {#each filteredSuggestions as suggestion (suggestion)}
+            {#each filteredSuggestions as suggestion}
                 <li><button on:click={() => selectSuggestion(suggestion)}>{suggestion}</button></li>
             {/each}
         </ul>
@@ -87,7 +80,7 @@
             background: none;
             border: none;
             cursor: pointer;
-            right: 0px;
+            right: 0;
             top: 0;
             bottom: 0;
             color: gray;

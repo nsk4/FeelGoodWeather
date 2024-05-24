@@ -4,8 +4,8 @@
     let isExpanded = false;
 </script>
 
-<div class="container">
-    <button class="toggle-button" on:click={() => (isExpanded = !isExpanded)}>
+<div>
+    <button type="button" class="toggle-button" on:click={() => (isExpanded = !isExpanded)}>
         <div class="toggle-icon">
             {#if isExpanded}
                 <TiArrowSortedUp />

@@ -4,43 +4,45 @@
 </script>
 
 <div>
-    {#if data && data[0]}
+    {#if data && data[0] && data[0].weatherData}
         <div class="table">
             <div class="row">
-                <div class="cell">Location</div>
-                {#each data[0].weatherData as weatherData}
-                    <div class="cell">{weatherData.date}</div>
+                <div class="cell">Date</div>
+                {#each data as dataItem}
+                    <div class="cell">
+                        <p>{dataItem.location.name}</p>
+                        <p>{`${dataItem.location.latitude}:${dataItem.location.longitude}`}</p>
+                    </div>
                 {/each}
             </div>
-            {#each data as dataItem}
-                {#if dataItem}
-                    <div class="row">
-                        <div class="cell">
-                            <p>{dataItem.location.name}</p>
-                            <p>{`${dataItem.location.latitude}:${dataItem.location.longitude}`}</p>
-                        </div>
-                        {#each dataItem.weatherData as weatherData}
+            {#each data[0].weatherData as weatherData}
+                <div class="row">
+                    <div class="cell">{weatherData.date}</div>
+                    {#each data as dataItem}
+                        {#if dataItem.weatherData.find((w) => w.date === weatherData.date)}
                             <div class="cell">
-                                {weatherData.percipation}mm | {weatherData.percipationProbablility}%
-                                <p>
-                                    <span style:height="60px" style:display="inline-block">
-                                        <svelte:component this={weatherData.codeDescription.icon} />
-                                    </span>
-                                </p>
+                                {#each dataItem.weatherData as wd}
+                                    {#if wd.date === weatherData.date}
+                                        {wd.percipation}mm | {wd.percipationProbablility}%
+                                        <p>
+                                            <span style:height="60px" style:display="inline-block">
+                                                <svelte:component this={wd.codeDescription.icon} />
+                                            </span>
+                                        </p>
+                                    {/if}
+                                {/each}
                             </div>
-                        {/each}
-                    </div>
-                {/if}
+                        {:else}
+                            <div class="cell"></div>
+                        {/if}
+                    {/each}
+                </div>
             {/each}
         </div>
     {/if}
 </div>
 
 <style lang="scss">
-    * {
-        background-color: #c5c6d0;
-    }
-
     .table {
         display: table;
         border-collapse: collapse;

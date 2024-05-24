@@ -26,7 +26,7 @@ export interface weatherCodeDescription {
     description: string;
     score: number;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    icon: any;
+    icon: any; // TODO: any should not be used
 }
 
 export interface WeatherData {

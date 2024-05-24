@@ -1,10 +1,11 @@
 <script lang="ts">
+    import IoIosBuild from 'svelte-icons/io/IoIosBuild.svelte';
     import DataDisplay from './DataDisplay.svelte';
     import LocationSelector from './LocationSelector.svelte';
     import type LocationCoordinates from '$lib/utils/LocationCoordinates';
     import { fetchWeatherData, type LocationWeatherData } from '$lib/utils/WeatherUtils';
     import WeatherComparator from './WeatherComparator.svelte';
-    import { fade, slide } from 'svelte/transition';
+    import { slide } from 'svelte/transition';
     let sourceCoordinates: LocationCoordinates;
     let source: LocationWeatherData;
     let targetCoordinates: LocationCoordinates;
@@ -12,50 +13,85 @@
     let inputIndex = 0;
 
     const handleSetMyLocation = async (event: CustomEvent<LocationCoordinates>): Promise<void> => {
-        inputIndex += 1;
+        inputIndex = 1;
         sourceCoordinates = event.detail;
     };
 
     const handleSetTargetLocation = async (
         event: CustomEvent<LocationCoordinates>
     ): Promise<void> => {
-        inputIndex += 1;
+        inputIndex = 2;
         targetCoordinates = event.detail;
     };
 
     const handleGetWeatherData = async (): Promise<void> => {
         source = await fetchWeatherData(sourceCoordinates);
         target = await fetchWeatherData(targetCoordinates);
-        inputIndex += 1;
+        inputIndex = 3;
     };
 </script>
 
+<!-- TODO: refactor this step by step part into separate components -->
 <ul>
-    <li class:full-opacity={inputIndex === 0} transition:fade>
-        I live in:
-        <div>
-            <LocationSelector on:setlocation={handleSetMyLocation} localLocation />
+    <li>
+        <div class={inputIndex === 0 ? 'full-opacity' : 'not-full-opacity'}>
+            I live in:
+            <div>
+                <LocationSelector on:setlocation={handleSetMyLocation} localLocation />
+            </div>
         </div>
-    </li>
-    <li class:full-opacity={inputIndex === 1} transition:fade>
-        <div>
-            I flex over: <LocationSelector on:setlocation={handleSetTargetLocation} />
-        </div>
-    </li>
-    <li class:full-opacity={inputIndex === 2} transition:fade>
-        <input type="button" value="Flex" on:click={handleGetWeatherData} />
-    </li>
 
-    {#if inputIndex !== 3}
-        <li>???</li>
-    {:else}
-        <li class:full-opacity={inputIndex === 3} transition:fade>
-            <WeatherComparator {source} {target} />
-        </li>
-        <li class:full-opacity={inputIndex === 3} transition:slide={{ delay: 500 }}>
-            <DataDisplay data={[source, target]} />
-        </li>
-    {/if}
+        {#if inputIndex > 0}
+            <div class="top-right-component">
+                <!-- TODO: This icon wrapping is commonly used throughout application. Extract it to a separate component. -->
+                <button type="button" class="top-right-button" on:click={() => (inputIndex = 0)}>
+                    <div class="top-right-button-icon">
+                        <IoIosBuild />
+                    </div>
+                </button>
+            </div>
+        {/if}
+    </li>
+    <li>
+        <div class={inputIndex === 1 ? 'full-opacity' : 'not-full-opacity'}>
+            I flex over:
+            <div>
+                <LocationSelector on:setlocation={handleSetTargetLocation} />
+            </div>
+        </div>
+        {#if inputIndex > 1}
+            <div class="top-right-component">
+                <button type="button" class="top-right-button" on:click={() => (inputIndex = 1)}>
+                    <div class="top-right-button-icon">
+                        <IoIosBuild />
+                    </div>
+                </button>
+            </div>
+        {/if}
+    </li>
+    <li>
+        <div class={inputIndex === 2 ? 'full-opacity' : 'not-full-opacity'}>
+            <input type="button" value="Flex" on:click={handleGetWeatherData} />
+        </div>
+    </li>
+    <li>
+        <div class={inputIndex === 3 ? 'full-opacity' : 'not-full-opacity'}>
+            {#if inputIndex === 3}
+                <div transition:slide><WeatherComparator {source} {target} /></div>
+            {:else}
+                <div transition:slide>???</div>
+            {/if}
+        </div>
+    </li>
+    <li>
+        <div class={inputIndex === 3 ? 'full-opacity' : 'not-full-opacity'}>
+            {#if inputIndex === 3}
+                <div transition:slide={{ delay: 500 }}><DataDisplay data={[source, target]} /></div>
+            {:else}
+                <div transition:slide>???</div>
+            {/if}
+        </div>
+    </li>
 </ul>
 
 <style lang="scss">
@@ -68,16 +104,42 @@
         gap: 20px;
 
         li {
+            position: relative; // For top-right-component absolute position.
             padding: 10px;
             border: 1px solid #ccc;
             text-align: center;
-            opacity: 1;
-            transition: opacity 0.3s ease-in-out;
             width: 400px;
-        }
 
-        li:not(.full-opacity) {
-            opacity: 0.5;
+            // Since svelte only supports transition for elements entering or leaving DOM a CSS transition is needed for elements that only change opacity.
+            .full-opacity {
+                transition: opacity 0.5s ease-in-out;
+            }
+
+            .not-full-opacity {
+                opacity: 0.5;
+                pointer-events: none;
+                transition: opacity 0.5s ease-in-out;
+            }
+
+            .top-right-component {
+                position: absolute;
+                right: 5px;
+                top: 5px;
+
+                .top-right-button {
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                    height: 20px;
+                    width: 100%;
+                    padding: 0;
+
+                    .top-right-button-icon {
+                        height: 100%;
+                        width: 100%;
+                    }
+                }
+            }
         }
     }
 </style>
