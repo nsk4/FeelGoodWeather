@@ -44,8 +44,8 @@
         {#if inputIndex > 0}
             <div class="top-right-component">
                 <!-- TODO: This icon wrapping is commonly used throughout application. Extract it to a separate component. -->
-                <button type="button" class="top-right-button" on:click={() => (inputIndex = 0)}>
-                    <div class="top-right-button-icon">
+                <button type="button" class="edit-button" on:click={() => (inputIndex = 0)}>
+                    <div class="edit-icon">
                         <IoIosBuild />
                     </div>
                 </button>
@@ -61,8 +61,8 @@
         </div>
         {#if inputIndex > 1}
             <div class="top-right-component">
-                <button type="button" class="top-right-button" on:click={() => (inputIndex = 1)}>
-                    <div class="top-right-button-icon">
+                <button type="button" class="edit-button" on:click={() => (inputIndex = 1)}>
+                    <div class="edit-icon">
                         <IoIosBuild />
                     </div>
                 </button>
@@ -136,7 +136,7 @@
                 right: 5px;
                 top: 5px;
 
-                .top-right-button {
+                .edit-button {
                     background: none;
                     border: none;
                     cursor: pointer;
@@ -144,7 +144,7 @@
                     width: 100%;
                     padding: 0;
 
-                    .top-right-button-icon {
+                    .edit-icon {
                         height: 100%;
                         width: 100%;
                     }

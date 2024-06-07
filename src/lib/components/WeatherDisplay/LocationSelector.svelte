@@ -146,12 +146,11 @@
 </script>
 
 <ComboBox suggestions={cityNames} on:selected={locationSelected} value={location.name} />
-
 {#if localLocation}
-    <button type="button" on:click={getLocation}>
-        <span style:height="10px" style:display="inline-block">
+    <button type="button" class="location-button" on:click={getLocation}>
+        <div class="location-icon">
             <TiLocationArrowOutline />
-        </span>
+        </div>
     </button>
 {/if}
 
@@ -183,10 +182,22 @@
         <button type="submit">Set</button>
     </form>
 </ToggleExpand>
-
 {#if !!errorMessage}
     <p style:color="red" transition:slide>Error: {errorMessage}</p>
 {/if}
 
 <style lang="scss">
+    .location-button {
+        cursor: pointer;
+        padding: 0;
+        // Set height to line height and use bottom margin to properly allign button to middle.
+        vertical-align: middle;
+        height: 1.4lh;
+        margin-bottom: 2px;
+
+        .location-icon {
+            height: 100%;
+            width: 100%;
+        }
+    }
 </style>
