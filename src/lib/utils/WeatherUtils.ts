@@ -1,3 +1,4 @@
+import type { ComponentType } from 'svelte';
 import { error } from '@sveltejs/kit';
 import type LocationCoordinates from './LocationCoordinates';
 import WiCloudy from 'svelte-icons/wi/WiCloudy.svelte';
@@ -25,8 +26,7 @@ export interface LocationWeatherData {
 export interface weatherCodeDescription {
     description: string;
     score: number;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    icon: any; // TODO: any should not be used
+    icon: ComponentType;
 }
 
 export interface WeatherData {
