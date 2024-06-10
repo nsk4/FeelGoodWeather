@@ -6,6 +6,7 @@
     import { fetchWeatherData, type LocationWeatherData } from '$lib/utils/WeatherUtils';
     import WeatherComparator from './WeatherComparator.svelte';
     import { slide } from 'svelte/transition';
+    import IconButton from '$components/IconButton.svelte';
     let sourceCoordinates: LocationCoordinates;
     let source: LocationWeatherData;
     let targetCoordinates: LocationCoordinates;
@@ -33,6 +34,7 @@
 
 <!-- TODO: refactor this step by step part into separate components -->
 <ul>
+    <!--Own location entry -->
     <li>
         <div class={inputIndex === 0 ? 'full-opacity' : 'not-full-opacity'}>
             I live in:
@@ -40,18 +42,15 @@
                 <LocationSelector on:setlocation={handleSetMyLocation} localLocation />
             </div>
         </div>
-
         {#if inputIndex > 0}
             <div class="top-right-component">
-                <!-- TODO: This icon wrapping is commonly used throughout application. Extract it to a separate component. -->
-                <button type="button" class="edit-button" on:click={() => (inputIndex = 0)}>
-                    <div class="edit-icon">
-                        <IoIosBuild />
-                    </div>
-                </button>
+                <IconButton on:click={() => (inputIndex = 0)} height="20px"
+                    ><IoIosBuild />
+                </IconButton>
             </div>
         {/if}
     </li>
+    <!--Target location entry -->
     <li>
         <div class={inputIndex === 1 ? 'full-opacity' : 'not-full-opacity'}>
             I flex over:
@@ -61,19 +60,19 @@
         </div>
         {#if inputIndex > 1}
             <div class="top-right-component">
-                <button type="button" class="edit-button" on:click={() => (inputIndex = 1)}>
-                    <div class="edit-icon">
-                        <IoIosBuild />
-                    </div>
-                </button>
+                <IconButton on:click={() => (inputIndex = 1)} height="20px">
+                    <IoIosBuild />
+                </IconButton>
             </div>
         {/if}
     </li>
+    <!--Flex button -->
     <li>
         <div class={inputIndex === 2 ? 'full-opacity' : 'not-full-opacity'}>
             <input type="button" value="Flex" on:click={handleGetWeatherData} />
         </div>
     </li>
+    <!--Weather comparison text -->
     <li>
         <div class={inputIndex === 3 ? 'full-opacity' : 'not-full-opacity'}>
             {#if inputIndex === 3}
@@ -83,6 +82,7 @@
             {/if}
         </div>
     </li>
+    <!--Weather data display -->
     <li>
         <div class={inputIndex === 3 ? 'full-opacity' : 'not-full-opacity'}>
             {#if inputIndex === 3}
@@ -94,7 +94,7 @@
             {/if}
         </div>
     </li>
-
+    <!--Start over button, only visible after comparison is done. -->
     {#if inputIndex === 3}
         <li in:slide={{ delay: 750 }} out:slide>
             <div class="full-opacity">
@@ -135,20 +135,6 @@
                 position: absolute;
                 right: 5px;
                 top: 5px;
-
-                .edit-button {
-                    background: none;
-                    border: none;
-                    cursor: pointer;
-                    height: 20px;
-                    width: 100%;
-                    padding: 0;
-
-                    .edit-icon {
-                        height: 100%;
-                        width: 100%;
-                    }
-                }
             }
         }
     }

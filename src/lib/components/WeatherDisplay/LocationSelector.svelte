@@ -5,6 +5,7 @@
     import { slide } from 'svelte/transition';
     import ComboBox from '$components/ComboBox.svelte';
     import ToggleExpand from '$components/ToggleExpand.svelte';
+    import IconButton from '$components/IconButton.svelte';
 
     export let localLocation: boolean = false;
 
@@ -147,11 +148,9 @@
 
 <ComboBox suggestions={cityNames} on:selected={locationSelected} value={location.name} />
 {#if localLocation}
-    <button type="button" class="location-button" on:click={getLocation}>
-        <div class="location-icon">
-            <TiLocationArrowOutline />
-        </div>
-    </button>
+    <IconButton on:click={getLocation} height="1.4lh" margin="0 0 2px 0">
+        <TiLocationArrowOutline />
+    </IconButton>
 {/if}
 
 <ToggleExpand>
@@ -187,17 +186,4 @@
 {/if}
 
 <style lang="scss">
-    .location-button {
-        cursor: pointer;
-        padding: 0;
-        // Set height to line height and use bottom margin to properly allign button to middle.
-        vertical-align: middle;
-        height: 1.4lh;
-        margin-bottom: 2px;
-
-        .location-icon {
-            height: 100%;
-            width: 100%;
-        }
-    }
 </style>
