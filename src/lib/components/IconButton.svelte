@@ -6,10 +6,9 @@
     };
 
     export let height: string = '';
-    export let margin: string = '';
 </script>
 
-<button type="button" class="location-button" on:click={click} style:height style:margin>
+<button type="button" class="location-button" on:click={click} style:height>
     <div class="location-icon">
         <slot />
     </div>
@@ -17,6 +16,8 @@
 
 <style lang="scss">
     .location-button {
+        background-color: #21262d;
+        color: #c9d1d9;
         background: none;
         border: none;
         cursor: pointer;

@@ -1,5 +1,6 @@
 <script lang="ts">
     import TiLocationArrowOutline from 'svelte-icons/ti/TiLocationArrowOutline.svelte';
+    import FaCheck from 'svelte-icons/fa/FaCheck.svelte';
     import { createEventDispatcher, onMount } from 'svelte';
     import type LocationCoordinates from '$lib/utils/LocationCoordinates';
     import { slide } from 'svelte/transition';
@@ -18,6 +19,7 @@
     let errorMessage: string = '';
     let cities: LocationCoordinates[];
     $: cityNames = cities?.map((city) => city.name);
+    let locationForm: HTMLFormElement; // Form for entering location coordinates.
 
     // Load list of cities from a static CSV file
     const loadCities = async (): Promise<LocationCoordinates[]> => {
@@ -146,16 +148,31 @@
     };
 </script>
 
-<ComboBox suggestions={cityNames} on:selected={locationSelected} value={location.name} />
-{#if localLocation}
-    <IconButton on:click={getLocation} height="1.4lh" margin="0 0 2px 0">
-        <TiLocationArrowOutline />
-    </IconButton>
-{/if}
+<div style:position="relative">
+    <ComboBox
+        suggestions={cityNames}
+        on:selected={locationSelected}
+        value={location.name}
+        width="250px"
+    />
+    {#if localLocation}
+        <div class="location-get-button">
+            <IconButton on:click={getLocation} height="2lh">
+                <TiLocationArrowOutline />
+            </IconButton>
+        </div>
+    {/if}
+</div>
 
 <ToggleExpand>
-    <form on:submit|preventDefault={submitCoordinatesForm} transition:slide>
+    <form
+        bind:this={locationForm}
+        on:submit|preventDefault={submitCoordinatesForm}
+        transition:slide
+        style:position="relative"
+    >
         <input
+            class="input-box"
             type="number"
             step="0.0001"
             id="latitude"
@@ -163,11 +180,12 @@
             placeholder="Latitude"
             min={-90}
             max={90}
-            style:width="75px"
+            style:width="118px"
             required
         />
         :
         <input
+            class="input-box"
             type="number"
             step="0.0001"
             id="longitude"
@@ -175,10 +193,15 @@
             placeholder="Longitude"
             min={-180}
             max={180}
-            style:width="75px"
+            style:width="118px"
             required
         />
-        <button type="submit">Set</button>
+
+        <div class="location-confirm-button">
+            <IconButton on:click={() => locationForm.requestSubmit()} height="1.4lh">
+                <FaCheck />
+            </IconButton>
+        </div>
     </form>
 </ToggleExpand>
 {#if !!errorMessage}
@@ -186,4 +209,24 @@
 {/if}
 
 <style lang="scss">
+    .location-get-button {
+        position: absolute;
+        right: 28px;
+        top: 2px;
+    }
+
+    .location-confirm-button {
+        position: absolute;
+        right: 35px;
+        top: 2px;
+    }
+
+    .input-box {
+        background-color: #0d1117;
+        color: #c9d1d9;
+        border: 1px solid #30363d;
+        border-radius: 6px;
+        padding: 8px;
+        box-sizing: border-box;
+    }
 </style>

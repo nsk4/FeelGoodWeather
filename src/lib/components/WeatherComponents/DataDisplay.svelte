@@ -53,7 +53,7 @@
 
             .cell {
                 display: table-cell;
-                border: 1px solid #ccc;
+                border: 1px solid #30363d;
                 padding: 8px;
                 text-align: center;
             }

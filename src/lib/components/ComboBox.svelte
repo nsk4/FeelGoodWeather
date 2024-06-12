@@ -7,6 +7,7 @@
     export let displayLimit: number = 10;
     export let suggestions: string[] = [];
     export let value: string = '';
+    export let width: string = '';
 
     let filteredSuggestions: string[] = [];
     let isFocused: boolean = false;
@@ -57,6 +58,8 @@
         placeholder="Type to filter..."
         on:focus={() => (isFocused = true)}
         on:change={() => (isFocused = true)}
+        style:width
+        class="input-box"
     />
 
     <input type="button" class="clear-input-button" value="X" on:click={() => (value = '')} />
@@ -75,6 +78,15 @@
         position: relative;
         display: inline-block;
 
+        .input-box {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
         .clear-input-button {
             position: absolute;
             background: none;
@@ -83,7 +95,7 @@
             right: 0;
             top: 0;
             bottom: 0;
-            color: gray;
+            color: #c9d1d9;
         }
 
         ul {
@@ -91,14 +103,16 @@
             z-index: 1;
             width: 100%;
             margin: 0;
-            padding: 0;
             list-style-type: none;
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
+            background-color: #161b22;
+            border: 1px solid #30363d;
             border-top: none;
+            border-radius: 6px;
+            padding: 8px;
+            box-sizing: border-box;
 
             button:hover {
-                background-color: #f1f1f1;
+                background-color: #30363d;
             }
 
             button {
@@ -111,6 +125,7 @@
                 width: 100%;
                 display: flex;
                 align-items: center;
+                color: #c9d1d9;
             }
         }
     }
