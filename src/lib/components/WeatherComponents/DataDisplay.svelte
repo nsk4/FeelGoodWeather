@@ -8,7 +8,6 @@
         <table>
             <tr>
                 <td>Date</td>
-
                 {#each data as dataItem}
                     <td>
                         <p>{dataItem.location.name}</p>
@@ -16,7 +15,6 @@
                     </td>
                 {/each}
             </tr>
-
             {#each data[0].weatherData as weatherData}
                 <tr>
                     <td>{weatherData.date}</td>
@@ -56,14 +54,15 @@
                 border-right: 1px solid #30363d;
                 padding: 8px;
                 text-align: center;
-            }
-            td:last-child {
-                border-right: none;
-            }
-        }
 
-        tr:last-child > td {
-            border-bottom: none;
+                &:last-child {
+                    border-right: none;
+                }
+            }
+
+            &:last-child > td {
+                border-bottom: none;
+            }
         }
     }
 </style>

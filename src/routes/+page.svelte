@@ -72,7 +72,12 @@
     <!--Flex button -->
     <div class="box">
         <div class="full-opacity" class:partial-opacity={inputIndex !== 2}>
-            <input type="button" value="Flex" on:click={handleGetWeatherData} />
+            <input
+                type="button"
+                class="action-button"
+                value="Flex"
+                on:click={handleGetWeatherData}
+            />
         </div>
     </div>
 
@@ -97,7 +102,12 @@
     {#if inputIndex === 3}
         <div class="box" in:slide={{ delay: 750 }} out:slide>
             <div>
-                <input type="button" value="Start over" on:click={() => (inputIndex = 0)} />
+                <input
+                    type="button"
+                    class="action-button"
+                    value="Start over"
+                    on:click={() => (inputIndex = 0)}
+                />
             </div>
         </div>
     {/if}
@@ -145,6 +155,22 @@
             position: absolute;
             right: 5px;
             top: 5px;
+        }
+    }
+
+    .action-button {
+        background-color: #3b5998;
+        color: #c9d1d9;
+        border: none;
+        border-radius: 50%;
+        padding: 16px 24px;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: background-color 0.2s ease;
+
+        &:active {
+            background-color: #2d4373;
         }
     }
 </style>
