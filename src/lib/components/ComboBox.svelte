@@ -51,14 +51,13 @@
     });
 </script>
 
-<div class="combobox" bind:this={input}>
+<div class="combobox" bind:this={input} style:width>
     <input
         type="text"
         bind:value
         placeholder="Type to filter..."
         on:focus={() => (isFocused = true)}
         on:change={() => (isFocused = true)}
-        style:width
         class="input-box"
     />
 
@@ -77,6 +76,7 @@
     .combobox {
         position: relative;
         display: inline-block;
+        width: 100%;
 
         .input-box {
             background-color: #0d1117;
@@ -87,6 +87,7 @@
             border-radius: 6px;
             padding: 8px;
             box-sizing: border-box;
+            width: 100%;
         }
 
         .clear-input-button {

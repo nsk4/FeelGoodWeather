@@ -1,7 +1,7 @@
 <script lang="ts">
     import TiLocationArrowOutline from 'svelte-icons/ti/TiLocationArrowOutline.svelte';
     import FaCheck from 'svelte-icons/fa/FaCheck.svelte';
-    import { createEventDispatcher, onMount } from 'svelte';
+    import { createEventDispatcher } from 'svelte';
     import type LocationCoordinates from '$lib/utils/LocationCoordinates';
     import { slide } from 'svelte/transition';
     import ComboBox from '$components/ComboBox.svelte';
@@ -125,85 +125,84 @@
     };
 </script>
 
-<div style:position="relative">
-    <ComboBox
-        suggestions={cityNames}
-        on:selected={locationSelected}
-        value={location.name}
-        width="250px"
-    />
+<div class="location-entry">
+    <div class="location-entry-input">
+        <ComboBox suggestions={cityNames} on:selected={locationSelected} value={location.name} />
+    </div>
     {#if localLocation}
-        <div class="location-get-button">
-            <IconButton on:click={getLocation} height="2lh">
-                <TiLocationArrowOutline />
-            </IconButton>
-        </div>
+        <IconButton on:click={getLocation} height="2lh">
+            <TiLocationArrowOutline />
+        </IconButton>
     {/if}
 </div>
 
-<ToggleExpand>
-    <form
-        bind:this={locationForm}
-        on:submit|preventDefault={submitCoordinatesForm}
-        transition:slide
-        style:position="relative"
-    >
-        <input
-            class="input-box"
-            type="number"
-            step="0.0001"
-            id="latitude"
-            bind:value={location.latitude}
-            placeholder="Latitude"
-            min={-90}
-            max={90}
-            style:width="118px"
-            required
-        />
-        :
-        <input
-            class="input-box"
-            type="number"
-            step="0.0001"
-            id="longitude"
-            bind:value={location.longitude}
-            placeholder="Longitude"
-            min={-180}
-            max={180}
-            style:width="118px"
-            required
-        />
+<div>
+    <ToggleExpand>
+        <form
+            bind:this={locationForm}
+            on:submit|preventDefault={submitCoordinatesForm}
+            transition:slide
+        >
+            <input
+                class="input-box"
+                type="number"
+                step="0.0001"
+                id="latitude"
+                bind:value={location.latitude}
+                placeholder="Latitude"
+                min={-90}
+                max={90}
+                style:width="115px"
+                required
+            />
+            :
+            <input
+                class="input-box"
+                type="number"
+                step="0.0001"
+                id="longitude"
+                bind:value={location.longitude}
+                placeholder="Longitude"
+                min={-180}
+                max={180}
+                style:width="115px"
+                required
+            />
 
-        <div class="location-confirm-button">
-            <IconButton on:click={() => locationForm.requestSubmit()} height="1.4lh">
-                <FaCheck />
-            </IconButton>
-        </div>
-    </form>
-</ToggleExpand>
+            <div style:display="inline">
+                <IconButton on:click={() => locationForm.requestSubmit()} height="1.4lh">
+                    <FaCheck />
+                </IconButton>
+            </div>
+        </form>
+    </ToggleExpand>
+</div>
+
 {#if !!errorMessage}
     <p style:color="red" transition:slide>Error: {errorMessage}</p>
 {/if}
 
 <style lang="scss">
-    .location-get-button {
-        position: absolute;
-        right: 28px;
-        top: 2px;
+    .location-entry {
+        display: flex;
+        min-width: 300px;
+        max-width: 500px;
+        width: 100%;
+
+        .location-entry-input {
+            flex: 1;
+        }
     }
 
-    .location-confirm-button {
-        position: absolute;
-        right: 35px;
-        top: 2px;
-    }
-
-    .input-box {
-        background-color: #0d1117;
-        color: #c9d1d9;
-        border: 1px solid #30363d;
-        border-radius: 6px;
-        padding: 8px;
-        box-sizing: border-box;
+    form {
+        padding-left: 25px; // Offset submit button
+        .input-box {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 8px;
+            box-sizing: border-box;
+        }
     }
 </style>

@@ -5,19 +5,17 @@
     let isExpanded = false;
 </script>
 
-<div>
-    <IconButton on:click={() => (isExpanded = !isExpanded)} height="30px">
-        {#if isExpanded}
-            <TiArrowSortedUp />
-        {:else}
-            <TiArrowSortedDown />
-        {/if}
-    </IconButton>
-
+<IconButton on:click={() => (isExpanded = !isExpanded)} height="30px">
     {#if isExpanded}
-        <slot />
+        <TiArrowSortedUp />
+    {:else}
+        <TiArrowSortedDown />
     {/if}
-</div>
+</IconButton>
+
+{#if isExpanded}
+    <slot />
+{/if}
 
 <style lang="scss">
 </style>

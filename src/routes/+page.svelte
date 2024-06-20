@@ -35,110 +35,88 @@
     };
 </script>
 
-<div class="main">
-    <h1>Welcome to Feel Good Weather!</h1>
-    <p>Make yourself feel good by flexing over rainier places than yours.</p>
-
-    <!--Own location entry -->
-    <div class="box">
-        <div class="full-opacity" class:partial-opacity={inputIndex !== 0}>
-            I live in:
-            <div>
-                <LocationSelector
-                    on:setlocation={handleSetMyLocation}
-                    cities={data.cities}
-                    localLocation
-                />
-            </div>
-        </div>
-        {#if inputIndex > 0}
-            <div class="edit-component">
-                <IconButton on:click={() => (inputIndex = 0)} height="20px">
-                    <IoIosBuild />
-                </IconButton>
-            </div>
-        {/if}
-    </div>
-
-    <!--Target location entry -->
-    <div class="box">
-        <div class="full-opacity" class:partial-opacity={inputIndex !== 1}>
-            I flex over:
-            <div>
-                <LocationSelector on:setlocation={handleSetTargetLocation} cities={data.cities} />
-            </div>
-        </div>
-        {#if inputIndex > 1}
-            <div class="edit-component">
-                <IconButton on:click={() => (inputIndex = 1)} height="20px">
-                    <IoIosBuild />
-                </IconButton>
-            </div>
-        {/if}
-    </div>
-    <!--Flex button -->
-    <div class="box">
-        <div class="full-opacity" class:partial-opacity={inputIndex !== 2}>
-            <input
-                type="button"
-                class="action-button"
-                value="Flex"
-                on:click={handleGetWeatherData}
+<!--Own location entry -->
+<div class="box">
+    <div class="full-opacity" class:partial-opacity={inputIndex !== 0}>
+        I live in:
+        <div class="align-center">
+            <LocationSelector
+                on:setlocation={handleSetMyLocation}
+                cities={data.cities}
+                localLocation
             />
         </div>
     </div>
-
-    <!--Results -->
-    <div class="box">
-        <div class="full-opacity" class:partial-opacity={inputIndex !== 3}>
-            {#if inputIndex === 3}
-                <!--Weather comparison text -->
-                <div transition:slide><WeatherComparator {source} {target} /></div>
-
-                <!--Weather data display -->
-                <div in:slide={{ delay: 500 }} out:slide>
-                    <DataDisplay data={[source, target]} />
-                </div>
-            {:else}
-                <div transition:slide>???</div>
-            {/if}
-        </div>
-    </div>
-
-    <!--Start over button, only visible after comparison is done. -->
-    {#if inputIndex === 3}
-        <div class="box" in:slide={{ delay: 750 }} out:slide>
-            <div>
-                <input
-                    type="button"
-                    class="action-button"
-                    value="Start over"
-                    on:click={() => (inputIndex = 0)}
-                />
-            </div>
+    {#if inputIndex > 0}
+        <div class="edit-component">
+            <IconButton on:click={() => (inputIndex = 0)} height="20px">
+                <IoIosBuild />
+            </IconButton>
         </div>
     {/if}
 </div>
 
+<!--Target location entry -->
+<div class="box">
+    <div class="full-opacity" class:partial-opacity={inputIndex !== 1}>
+        I flex over:
+        <div class="align-center">
+            <LocationSelector on:setlocation={handleSetTargetLocation} cities={data.cities} />
+        </div>
+    </div>
+    {#if inputIndex > 1}
+        <div class="edit-component">
+            <IconButton on:click={() => (inputIndex = 1)} height="20px">
+                <IoIosBuild />
+            </IconButton>
+        </div>
+    {/if}
+</div>
+<!--Flex button -->
+<div class="box">
+    <div class="full-opacity" class:partial-opacity={inputIndex !== 2}>
+        <input type="button" class="action-button" value="Flex" on:click={handleGetWeatherData} />
+    </div>
+</div>
+
+<!--Results -->
+<div class="box">
+    <div class="full-opacity" class:partial-opacity={inputIndex !== 3}>
+        {#if inputIndex === 3}
+            <!--Weather comparison text -->
+            <div transition:slide><WeatherComparator {source} {target} /></div>
+
+            <!--Weather data display -->
+            <div in:slide={{ delay: 500 }} out:slide>
+                <DataDisplay data={[source, target]} />
+            </div>
+        {:else}
+            <div transition:slide>???</div>
+        {/if}
+    </div>
+</div>
+
+<!--Start over button, only visible after comparison is done. -->
+{#if inputIndex === 3}
+    <div class="box" in:slide={{ delay: 750 }} out:slide>
+        <div>
+            <input
+                type="button"
+                class="action-button"
+                value="Start over"
+                on:click={() => (inputIndex = 0)}
+            />
+        </div>
+    </div>
+{/if}
+
 <style lang="scss">
-    :global(body) {
-        // Set global styles
-        background-color: #0d1117;
-        color: #c9d1d9;
-        font-family: 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
-    }
-
-    .main {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-width: 320px;
-        gap: 20px;
-    }
-
     .box {
         text-align: center;
-        width: 400px;
+        width: 100%;
+        min-width: 320px;
+        max-width: 700px;
+
         padding: 10px;
         border: 1px solid #30363d;
         border-radius: 6px;
@@ -162,6 +140,12 @@
             right: 5px;
             top: 5px;
         }
+    }
+
+    .align-center {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .action-button {
