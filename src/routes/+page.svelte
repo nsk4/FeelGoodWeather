@@ -7,6 +7,9 @@
     import WeatherComparator from '$components/WeatherComponents/WeatherComparator.svelte';
     import { slide } from 'svelte/transition';
     import IconButton from '$components/IconButton.svelte';
+    import type { PageData } from './$types';
+
+    export let data: PageData;
     let sourceCoordinates: LocationCoordinates;
     let source: LocationWeatherData;
     let targetCoordinates: LocationCoordinates;
@@ -41,7 +44,11 @@
         <div class="full-opacity" class:partial-opacity={inputIndex !== 0}>
             I live in:
             <div>
-                <LocationSelector on:setlocation={handleSetMyLocation} localLocation />
+                <LocationSelector
+                    on:setlocation={handleSetMyLocation}
+                    cities={data.cities}
+                    localLocation
+                />
             </div>
         </div>
         {#if inputIndex > 0}
@@ -58,7 +65,7 @@
         <div class="full-opacity" class:partial-opacity={inputIndex !== 1}>
             I flex over:
             <div>
-                <LocationSelector on:setlocation={handleSetTargetLocation} />
+                <LocationSelector on:setlocation={handleSetTargetLocation} cities={data.cities} />
             </div>
         </div>
         {#if inputIndex > 1}

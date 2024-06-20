@@ -17,27 +17,9 @@
         longitude: undefined as unknown as number
     };
     let errorMessage: string = '';
-    let cities: LocationCoordinates[];
+    export let cities: LocationCoordinates[];
     $: cityNames = cities?.map((city) => city.name);
     let locationForm: HTMLFormElement; // Form for entering location coordinates.
-
-    // Load list of cities from a static CSV file
-    const loadCities = async (): Promise<LocationCoordinates[]> => {
-        const response = await fetch('cityLocations.csv');
-        const text = await response.text();
-        return text?.split('\r\n')?.flatMap((line) => {
-            const splits = line.split('\t');
-            if (splits.length >= 3) {
-                return {
-                    name: splits[0],
-                    latitude: +splits[1],
-                    longitude: +splits[2]
-                } as LocationCoordinates;
-            } else {
-                return [];
-            }
-        });
-    };
 
     // Convert degrees to radians
     const degToRad = (x: number): number => {
@@ -101,11 +83,6 @@
             ? structuredClone(closestCity)
             : { name: `N/A (${latitude}:${longitude})`, latitude, longitude };
     };
-
-    // Initialize cities
-    onMount(async () => {
-        cities = await loadCities();
-    });
 
     // Get location through combobox
     const locationSelected = (event: { detail: { text: string } }): void => {
