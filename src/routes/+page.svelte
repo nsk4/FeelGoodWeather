@@ -118,8 +118,7 @@
         // Set global styles
         background-color: #0d1117;
         color: #c9d1d9;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif,
-            'Apple Color Emoji', 'Segoe UI Emoji';
+        font-family: 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
     }
 
     .main {
@@ -161,9 +160,10 @@
     .action-button {
         background-color: #3b5998;
         color: #c9d1d9;
+        font-family: 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
         border: none;
         border-radius: 50%;
-        padding: 16px 24px;
+        padding: 24px 24px;
         font-size: 24px;
         cursor: pointer;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);

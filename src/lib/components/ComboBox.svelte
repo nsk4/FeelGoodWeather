@@ -81,6 +81,8 @@
         .input-box {
             background-color: #0d1117;
             color: #c9d1d9;
+            font-family: 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+                'Segoe UI Emoji';
             border: 1px solid #30363d;
             border-radius: 6px;
             padding: 8px;
@@ -96,6 +98,8 @@
             top: 0;
             bottom: 0;
             color: #c9d1d9;
+            font-family: 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+                'Segoe UI Emoji';
         }
 
         ul {
