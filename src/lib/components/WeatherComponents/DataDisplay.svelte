@@ -5,22 +5,24 @@
 
 <div>
     {#if data && data[0] && data[0].weatherData}
-        <div class="table">
-            <div class="row">
-                <div class="cell">Date</div>
+        <table>
+            <tr>
+                <td>Date</td>
+
                 {#each data as dataItem}
-                    <div class="cell">
+                    <td>
                         <p>{dataItem.location.name}</p>
                         <p>{`${dataItem.location.latitude}:${dataItem.location.longitude}`}</p>
-                    </div>
+                    </td>
                 {/each}
-            </div>
+            </tr>
+
             {#each data[0].weatherData as weatherData}
-                <div class="row">
-                    <div class="cell">{weatherData.date}</div>
+                <tr>
+                    <td>{weatherData.date}</td>
                     {#each data as dataItem}
                         {#if dataItem.weatherData.find((w) => w.date === weatherData.date)}
-                            <div class="cell">
+                            <td>
                                 {#each dataItem.weatherData as wd}
                                     {#if wd.date === weatherData.date}
                                         {wd.percipation}mm | {wd.percipationProbablility}%
@@ -31,32 +33,37 @@
                                         </p>
                                     {/if}
                                 {/each}
-                            </div>
+                            </td>
                         {:else}
                             <div class="cell"></div>
                         {/if}
                     {/each}
-                </div>
+                </tr>
             {/each}
-        </div>
+        </table>
     {/if}
 </div>
 
 <style lang="scss">
-    .table {
-        display: table;
-        border-collapse: collapse;
+    table {
         width: 100%;
-
-        .row {
-            display: table-row;
-
-            .cell {
-                display: table-cell;
-                border: 1px solid #30363d;
+        border: 1px solid #30363d;
+        border-radius: 6px;
+        border-spacing: 0;
+        tr {
+            td {
+                border-bottom: 1px solid #30363d;
+                border-right: 1px solid #30363d;
                 padding: 8px;
                 text-align: center;
             }
+            td:last-child {
+                border-right: none;
+            }
+        }
+
+        tr:last-child > td {
+            border-bottom: none;
         }
     }
 </style>

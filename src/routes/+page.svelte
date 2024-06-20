@@ -75,20 +75,15 @@
             <input type="button" value="Flex" on:click={handleGetWeatherData} />
         </div>
     </div>
-    <!--Weather comparison text -->
+
+    <!--Results -->
     <div class="box">
         <div class="full-opacity" class:partial-opacity={inputIndex !== 3}>
             {#if inputIndex === 3}
+                <!--Weather comparison text -->
                 <div transition:slide><WeatherComparator {source} {target} /></div>
-            {:else}
-                <div transition:slide>???</div>
-            {/if}
-        </div>
-    </div>
-    <!--Weather data display -->
-    <div class="box">
-        <div class="full-opacity" class:partial-opacity={inputIndex !== 3}>
-            {#if inputIndex === 3}
+
+                <!--Weather data display -->
                 <div in:slide={{ delay: 500 }} out:slide>
                     <DataDisplay data={[source, target]} />
                 </div>
@@ -97,6 +92,7 @@
             {/if}
         </div>
     </div>
+
     <!--Start over button, only visible after comparison is done. -->
     {#if inputIndex === 3}
         <div class="box" in:slide={{ delay: 750 }} out:slide>
