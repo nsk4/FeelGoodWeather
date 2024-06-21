@@ -10,27 +10,52 @@
     import type { PageData } from './$types';
 
     export let data: PageData;
+    let sourceComponent: LocationSelector;
     let sourceCoordinates: LocationCoordinates;
     let source: LocationWeatherData;
+    let targetComponent: LocationSelector;
     let targetCoordinates: LocationCoordinates;
     let target: LocationWeatherData;
     let inputIndex = 0;
 
     const handleSetMyLocation = async (event: CustomEvent<LocationCoordinates>): Promise<void> => {
-        inputIndex = 1;
         sourceCoordinates = event.detail;
+        goToTargetEntry();
     };
 
     const handleSetTargetLocation = async (
         event: CustomEvent<LocationCoordinates>
     ): Promise<void> => {
-        inputIndex = 2;
         targetCoordinates = event.detail;
+        goToFlex();
     };
 
     const handleGetWeatherData = async (): Promise<void> => {
         source = await fetchWeatherData(sourceCoordinates);
         target = await fetchWeatherData(targetCoordinates);
+        goToComparison();
+    };
+
+    const goToStart = (): void => {
+        sourceComponent.clearInputs();
+        targetComponent.clearInputs();
+        inputIndex = 0;
+    };
+
+    const goToSourceEntry = (): void => {
+        targetComponent.clearInputs();
+        inputIndex = 0;
+    };
+
+    const goToTargetEntry = (): void => {
+        inputIndex = 1;
+    };
+
+    const goToFlex = (): void => {
+        inputIndex = 2;
+    };
+
+    const goToComparison = (): void => {
         inputIndex = 3;
     };
 </script>
@@ -41,6 +66,7 @@
         I live in:
         <div class="align-center">
             <LocationSelector
+                bind:this={sourceComponent}
                 on:setlocation={handleSetMyLocation}
                 cities={data.cities}
                 localLocation
@@ -49,7 +75,7 @@
     </div>
     {#if inputIndex > 0}
         <div class="edit-component">
-            <IconButton on:click={() => (inputIndex = 0)} height="20px">
+            <IconButton on:click={goToSourceEntry} height="20px">
                 <IoIosBuild />
             </IconButton>
         </div>
@@ -61,12 +87,16 @@
     <div class="full-opacity" class:partial-opacity={inputIndex !== 1}>
         I flex over:
         <div class="align-center">
-            <LocationSelector on:setlocation={handleSetTargetLocation} cities={data.cities} />
+            <LocationSelector
+                bind:this={targetComponent}
+                on:setlocation={handleSetTargetLocation}
+                cities={data.cities}
+            />
         </div>
     </div>
     {#if inputIndex > 1}
         <div class="edit-component">
-            <IconButton on:click={() => (inputIndex = 1)} height="20px">
+            <IconButton on:click={goToTargetEntry} height="20px">
                 <IoIosBuild />
             </IconButton>
         </div>
@@ -100,12 +130,7 @@
 {#if inputIndex === 3}
     <div class="box" in:slide={{ delay: 750 }} out:slide>
         <div>
-            <input
-                type="button"
-                class="action-button"
-                value="Start over"
-                on:click={() => (inputIndex = 0)}
-            />
+            <input type="button" class="action-button" value="Start over" on:click={goToStart} />
         </div>
     </div>
 {/if}

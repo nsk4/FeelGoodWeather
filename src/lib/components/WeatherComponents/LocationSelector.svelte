@@ -8,9 +8,9 @@
     import ToggleExpand from '$components/ToggleExpand.svelte';
     import IconButton from '$components/IconButton.svelte';
 
-    export let localLocation: boolean = false;
-
     const dispatch = createEventDispatcher();
+
+    export let localLocation: boolean = false;
     let location: LocationCoordinates = {
         name: '',
         latitude: undefined as unknown as number,
@@ -21,10 +21,23 @@
     $: cityNames = cities?.map((city) => city.name);
     let locationForm: HTMLFormElement; // Form for entering location coordinates.
 
+    let toggleExpandComponent: ToggleExpand;
+    // Clear inputs and collapse toggle bar
+    export const clearInputs = (): void => {
+        location = {
+            name: '',
+            latitude: undefined as unknown as number,
+            longitude: undefined as unknown as number
+        };
+
+        toggleExpandComponent.collapse();
+    };
+
     // Convert degrees to radians
     const degToRad = (x: number): number => {
         return (x * Math.PI) / 180;
     };
+
     // Calculate the distance between 2 points
     const calculateHaversineDistance = (
         lat1: number,
@@ -137,7 +150,7 @@
 </div>
 
 <div>
-    <ToggleExpand>
+    <ToggleExpand bind:this={toggleExpandComponent}>
         <form
             bind:this={locationForm}
             on:submit|preventDefault={submitCoordinatesForm}
