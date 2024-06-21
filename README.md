@@ -55,7 +55,7 @@ Make sure you have the following installed on your local development machine:
 
     ```sh
     git clone https://github.com/nsk4/FeelGoodWeather.git
-    cd feel-good-weather
+    cd FeelGoodWeather
     ```
 
 2. Install dependencies:
@@ -94,7 +94,7 @@ using Visual Studio Code Dev Containers. You can read more about devcontainers
 
     ```sh
     git clone https://github.com/nsk4/FeelGoodWeather.git
-    cd feel-good-weather
+    cd FeelGoodWeather
     ```
 
 2. Open the project in Visual Studio Code.
@@ -105,7 +105,13 @@ using Visual Studio Code Dev Containers. You can read more about devcontainers
 4. Visual Studio Code will now build the devcontainer image and start the container with the
    necessary dependencies for development.
 
-5. You are now ready to start developing inside the devcontainer.
+5. Install dependencies:
+
+    ```sh
+    npm install
+    ```
+
+6. You are now ready to start developing inside the devcontainer.
 
 ## Bug Reporting
 
