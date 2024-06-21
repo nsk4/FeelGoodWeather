@@ -6,7 +6,6 @@
 
     export const collapse = (): void => {
         isExpanded = false;
-        console.log(isExpanded);
     };
 </script>
 
