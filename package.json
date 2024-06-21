@@ -31,7 +31,6 @@
 	"type": "module",
 	"dependencies": {
 		"fuse.js": "^7.0.0",
-		"svelte-icons": "^2.1.0",
-		"tippy.js": "^6.3.7"
+		"svelte-icons": "^2.1.0"
 	}
 }

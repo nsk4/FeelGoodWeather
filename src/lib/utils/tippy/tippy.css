@@ -1,7 +1,0 @@
-.tippy-box[data-theme='tippy-error-popup'] {
-    color: red;
-}
-
-.tippy-box[data-theme='tippy-disable'] {
-    display: none;
-}
